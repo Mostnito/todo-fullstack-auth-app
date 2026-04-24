@@ -2,8 +2,10 @@ import { use } from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { Routes, Route,useNavigate } from 'react-router-dom'
+function Register() {
+    const navigate = useNavigate();
 
-function Register(){
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
@@ -14,16 +16,16 @@ function Register(){
     const [passwordspecial, setPasswordSpecial] = useState(false);
     const [passwordmatch, setPasswordMatch] = useState(false);
 
-    function emailvalidation(e){
-        if( /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e) ){
+    function emailvalidation(e) {
+        if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)) {
             setEmail(e);
             setEmailValid(true);
-        } else{
+        } else {
             setEmailValid(false);
         }
     }
 
-    function passwordvalidation(e){
+    function passwordvalidation(e) {
 
         if (e.length >= 8) {
             setPasswordLength(true);
@@ -43,13 +45,13 @@ function Register(){
         setPassword(e);
     }
 
-    function submit(e){
+    function submit(e) {
         e.preventDefault();
         if (emailvalid && passwordlength && poassworduppercase && passwordspecial && passwordmatch) {
             setLoading(true);
             const register = async () => {
                 try {
-                    const res = await axios.post("http://localhost:5000/register",{
+                    const res = await axios.post("http://localhost:5000/register", {
                         email: email,
                         password: password
                     });
@@ -60,7 +62,7 @@ function Register(){
                         confirmButtonText: 'ตกลง'
                     })
                     console.log("Registering user with email:", email);
-                    
+
                 } catch (error) {
                     console.log(error.response.data.error);
                     Swal.fire({
@@ -70,10 +72,19 @@ function Register(){
                         confirmButtonText: 'ตกลง'
                     })
                 }
-                 setLoading(false);
+                setLoading(false);
             }
             register();
-           
+            navigate("/login");
+
+
+        } else {
+            Swal.fire({
+                title: 'เกิดข้อผิดพลาด',
+                text: 'กรุณากรอกข้อมูลให้ถูกต้อง',
+                icon: 'error',
+                confirmButtonText: 'ตกลง'
+            })
         }
     }
 
@@ -85,20 +96,18 @@ function Register(){
         }
     }
 
-    return(
+    return (
         <div className="Register-section">
             <h2>สมัครสมาชิก</h2>
             <form action="">
-               <label>อีเมล</label>
-                <input type="email" onChange={(e)=>{emailvalidation(e.target.value)}} placeholder="example@gmail.com"/>
+                <label>อีเมล</label>
+                <input type="email" onChange={(e) => { emailvalidation(e.target.value) }} placeholder="example@gmail.com" />
                 <label>รหัสผ่าน</label>
-                <input type="password" onChange={(e)=>{passwordvalidation(e.target.value)}} placeholder="password"/>
+                <input type="password" onChange={(e) => { passwordvalidation(e.target.value) }} placeholder="password" />
                 <label>ยืนยันรหัสผ่าน</label>
-                <input type="password" onChange={(e)=>{passwordMatchValidation(e.target.value)}} placeholder="confirm password"/>
-                <button type="submit" onClick={(e)=>{submit(e)}}>Register</button> 
+                <input type="password" onChange={(e) => { passwordMatchValidation(e.target.value) }} placeholder="confirm password" />
+                <button type="submit" onClick={(e) => { submit(e) }}>Register</button>
             </form>
-            
-            
         </div>
     )
 }
