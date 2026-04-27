@@ -20,7 +20,7 @@ const pool = new Pool({
 function authenticateToken(req, res, next){
     const authHeader = req.headers["authorization"];
     const token = authHeader.split(" ")[1];
-    if (!authHeader){
+    if (!token || !authHeader){
         console.log("No token");
         return res.status(40.1).json({error: "No token"})
     }
@@ -73,14 +73,32 @@ app.post("/login", async (req, res)=>{
             return res.status(400).json({error: "Invalid password"});
         }
     }
-    const token = jwt.sign({id: user.rows[0].id},process.env.JWT_SECRET_KEY,{expiresIn: "15s"});
+    const token = jwt.sign({id: user.rows[0].id},process.env.JWT_SECRET_KEY,{expiresIn: "15m"});
     console.log("User logged in:", email);
     console.log("Generated JWT token:", token);
     res.json({token});
 });
 
+app.get("/todo", authenticateToken, async(req,res)=>{
+    console.log("Fetching todos for user ID:", req.user.id);
+    const userId = req.user.id;
+    const todos = await pool.query("SELECT * FROM todolist WHERE users_id=$1",[userId]);
+    console.log("Todo",todos.rows);
+    res.json(todos.rows);
+});
+
+app.post("/todo/create", authenticateToken, async(req,res)=>{
+    console.log("Creating todo for user ID:", req.user.id);
+    const userId = req.user.id;
+    const {topic, des} = req.body;
+    const newTodo = await pool.query("INSERT INTO todolist (users_id, topic, des,status) VALUES ($1, $2, $3, 'progress') RETURNING *",[userId, topic,des])
+    console.log("Created todo for user ID:", req.user.id, "Todo:", newTodo.rows[0]);
+    res.json(newTodo.rows[0]);
+});
+
 app.get("/check", authenticateToken, async (req, res) => {
     console.log("Authenticated user ID:", req.user.id);
+    console.log("Token is valid");
     return res.json({message: "Authenticated", userId: req.user.id});
 });
 
