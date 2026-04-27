@@ -2,11 +2,12 @@ const express = require("express");
 const cors = require("cors");
 const { Pool } = require("pg");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+
 require("dotenv").config();
 const app = express();
 app.use(cors());
 app.use(express.json());
-
 
 const pool = new Pool({
     user: process.env.DB_USER,
@@ -15,6 +16,26 @@ const pool = new Pool({
     password: process.env.DB_PASSWORD,
     port: process.env.DB_PORT,
 })
+
+function authenticateToken(req, res, next){
+    const authHeader = req.headers["authorization"];
+    const token = authHeader.split(" ")[1];
+    if (!authHeader){
+        console.log("No token");
+        return res.status(40.1).json({error: "No token"})
+    }
+
+    try{
+        const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+        
+        req.user = decoded;
+        next();
+    } catch (err){
+        console.log("Invalid token",token);
+        return res.status(401).json({error: "Invalid token"})
+    }
+}
+
 
 app.get("/", async (req, res) => {
     const result = await pool.query("SELECT * FROM users");
@@ -37,6 +58,30 @@ app.post("/register", async (req, res) =>{
     console.log("Created user:", regis.rows[0]);
     res.json(regis.rows[0]);
     
+});
+
+app.post("/login", async (req, res)=>{
+    const {email, password} = req.body;
+    const user = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
+    if(user.rows.length === 0){
+        console.log("User not found");
+        return res.status(400).json({error: "User not found"});
+    } else{
+        const validPassword = await bcrypt.compare(password, user.rows[0].password);
+        if(!validPassword){
+            console.log("Invalid password");
+            return res.status(400).json({error: "Invalid password"});
+        }
+    }
+    const token = jwt.sign({id: user.rows[0].id},process.env.JWT_SECRET_KEY,{expiresIn: "15s"});
+    console.log("User logged in:", email);
+    console.log("Generated JWT token:", token);
+    res.json({token});
+});
+
+app.get("/check", authenticateToken, async (req, res) => {
+    console.log("Authenticated user ID:", req.user.id);
+    return res.json({message: "Authenticated", userId: req.user.id});
 });
 
 app.listen(5000, ()=> {
