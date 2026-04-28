@@ -18,6 +18,19 @@ function Dashboard(){
         setDes(e);
     }
 
+    function swalError(){
+        Swal.fire({
+             title: 'กรุณาเข้าสู่ระบบ',
+             text: 'คุณต้องเข้าสู่ระบบเพื่อเข้าถึงแดชบอร์ด',
+             icon: 'warning',
+            confirmButtonText: 'ตกลง'
+         }).then((result) => {
+             console.log("Navigating to login page",result);
+             localStorage.removeItem("token");
+             navigate("/login");
+          });
+    }
+
     function gettask(){
         const token = localStorage.getItem("token");
         const fecthData = async () => {
@@ -40,7 +53,16 @@ function Dashboard(){
     function addtask(e){
         e.preventDefault();
         const token = localStorage.getItem("token");
-        const fetchData = async () => {
+        if (topic.trim() === "" || des.trim() === "") {
+            Swal.fire({
+                            title: 'เกิดข้อผิดพลาด',
+                            text: 'กรุณากรอกข้อมูลให้ถูกต้อง',
+                            icon: 'error',
+                            confirmButtonText: 'ตกลง'
+                        })
+            return;
+        } else{
+            const fetchData = async () => {
             try {
                 const res = await axios.post("http://localhost:5000/todo/create", {
                     topic: topic,
@@ -53,20 +75,14 @@ function Dashboard(){
                 console.log("Task added:", res.data);
                 gettask();
             } catch (error) {
-                if (error.response && error.response.status === 401) {
-                    console.error("Invalid Token")
-                    Swal.fire({
-                    title: 'กรุณาเข้าสู่ระบบ',
-                    text: 'คุณต้องเข้าสู่ระบบเพื่อเข้าถึงแดชบอร์ด',
-                    icon: 'warning',
-                    confirmButtonText: 'ตกลง'
-                })
-                navigate("/login");                }
-                console.error("Error adding task:", error);
+                swalError();
             }
         }
         fetchData();
         console.log("Add task function called");
+
+        }
+        
     }
 
     function deletetask (e, id){
@@ -82,16 +98,7 @@ function Dashboard(){
                 console.log("Task deleted:", res.data);
                 gettask();
             } catch (error) {
-                if (error.response && error.response.status === 401) {
-                    console.error("Invalid Token")
-                     Swal.fire({
-                        title: 'กรุณาเข้าสู่ระบบ',
-                        text: 'คุณต้องเข้าสู่ระบบเพื่อเข้าถึงแดชบอร์ด',
-                        icon: 'warning',
-                        confirmButtonText: 'ตกลง'
-                    })
-                    navigate("/login");   
-                }
+                swalError();
                 console.error("Error deleting task:", error);
             }
         }
@@ -113,16 +120,7 @@ function Dashboard(){
                 console.log("Task updated:", res.data);
                 gettask();
             } catch (error) {
-                if (error.response && error.response.status === 401) {
-                    console.error("Invalid Token")
-                     Swal.fire({
-                        title: 'กรุณาเข้าสู่ระบบ',
-                        text: 'คุณต้องเข้าสู่ระบบเพื่อเข้าถึงแดชบอร์ด',
-                        icon: 'warning',
-                        confirmButtonText: 'ตกลง'
-                    })
-                    navigate("/login");
-                }
+                swalError();
                 console.error("Error updating task:", error);
             }
         }
@@ -149,15 +147,8 @@ function Dashboard(){
                     });
                     gettask();
                 } catch (error) {
-                     Swal.fire({
-                        title: 'กรุณาเข้าสู่ระบบ',
-                        text: 'คุณต้องเข้าสู่ระบบเพื่อเข้าถึงแดชบอร์ด',
-                        icon: 'warning',
-                        confirmButtonText: 'ตกลง'
-                    })
-                    console.error("Invalid token:", error.response.data.error);
-                    localStorage.removeItem("token");
-                    navigate("/login");
+                     swalError();
+                    
                 }
             };
             fetchData();

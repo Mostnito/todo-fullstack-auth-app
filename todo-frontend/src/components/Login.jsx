@@ -45,13 +45,14 @@ function Login() {
                     navigate("/dashboard");
 
                 } catch (error) {
-                    console.error("Login error:", error.response.data.error);
+                    
                     Swal.fire({
                         title: 'เกิดข้อผิดพลาด',
-                        text: error.response.data.error,
+                        text: 'รหัสผ่านไม่ถูกต้องหรือไม่พบผู้ใช้',
                         icon: 'error',
                         confirmButtonText: 'ตกลง'
                     })
+                    console.error("Login error:", error.response.data.error);
                 }
             }
             login();

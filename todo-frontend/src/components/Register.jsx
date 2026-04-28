@@ -62,12 +62,12 @@ function Register() {
                         confirmButtonText: 'ตกลง'
                     })
                     console.log("Registering user with email:", email);
+                    navigate("/login");
 
                 } catch (error) {
-                    console.log(error.response.data.error);
                     Swal.fire({
                         title: 'เกิดข้อผิดพลาด',
-                        text: error.response.data.error,
+                        text: 'ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้',
                         icon: 'error',
                         confirmButtonText: 'ตกลง'
                     })
@@ -75,7 +75,7 @@ function Register() {
                 setLoading(false);
             }
             register();
-            navigate("/login");
+            
 
 
         } else {
