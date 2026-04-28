@@ -4,6 +4,8 @@ import Swal from "sweetalert2";
 import { useNavigate } from 'react-router-dom'
 import { use } from "react";
 
+import './Dashboard.css'
+
 function Dashboard(){
     const [topic, setTopic] = useState("");
     const [des, setDes] = useState("");
@@ -155,24 +157,26 @@ function Dashboard(){
         }
     },[])
     return(
-        <div>
-            <h1>Dashboard</h1>
-            <p>This is the dashboard page. You can manage your tasks here.</p>
+        <div className="dashboard-section">
             <div>
-                <form>
-                    <input type="text" onChange={(e)=>setTopic(e.target.value)} placeholder="Topic" />
-                    <input type="text" onChange={(e)=>setDes(e.target.value)} placeholder="Description" />
-                    <button type="submit" onClick={(e)=>{addtask(e)}}>Add Task</button>
+                <form className="add">
+                    <label >ชื่อรายการ</label>
+                    <input type="text" onChange={(e)=>setTopic(e.target.value)} placeholder="การบ้านคณิตศาสตร์" />
+                    <label >คำอธิบาย</label>
+                    <input type="text" onChange={(e)=>setDes(e.target.value)} placeholder="บวกเลข 20 ข้อ เขียนลงกระดาษ ส่ง 12/9/69" />
+                    <button type="submit" onClick={(e)=>{addtask(e)}}>เพิ่มรายการ</button>
                 </form>
             </div>
             <ul>
                 {tasks.map((task,index) => (
                     <li key={task.id}>
-                        <h3 style={{textDecoration: task.status === 'complete' ? 'line-through' : 'none'}}>{index + 1},{task.topic}</h3>
+                        <p style={{textDecoration: task.status === 'complete' ? 'line-through' : 'none'}}>{index + 1}. {task.topic}</p>      
                         <p>{task.des}</p>
-                        <p>Status: {task.status}</p>
-                        <button onClick={(e)=>{updatetask(e, task.id,task.status)}}>{task.status==='progress'? 'In Progress' : 'Complete'}</button>
-                        <button onClick={(e)=>{deletetask(e,task.id)}}>Delete</button>
+                        <div className="btn-group">
+                            <button className={task.status==='progress'? 'btn-progress' : 'btn-complete'} onClick={(e)=>{updatetask(e, task.id,task.status)}}>{task.status==='progress'? 'กำลังดำเนินการ' : 'สำเร็จ'}</button>
+                        <button className="btn-delete" onClick={(e)=>{deletetask(e,task.id)}}>ลบรายการ</button>
+                        </div>
+                        
                     </li>
                 ))}
             </ul>

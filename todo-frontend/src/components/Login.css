@@ -1,4 +1,4 @@
-.register-section{
+.login-section{
     max-width: 500px;
     margin: 100px auto;
     padding: 20px;
@@ -8,34 +8,34 @@
     color: white;
 }
 
-.register-section h2{
+.login-section h2{
     text-align: center;
     margin-bottom: 20px;
 }
 
-.register-section form{
+.login-section form{
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
 
-.register-section form label{
+.login-section form label{
     font-size: 18px;
 }
 
-.register-section form input{
+.login-section form input{
     font-size: 18px;
     border-radius: 5px;
     border: none;
     padding: 10px;
 }
 
-.register-section form input:focus{
+.login-section form input:focus{
     outline: none;
     box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
 }
 
-.register-section form button{
+.login-section form button{
     background-color: #412B6B;
     color: white;
     padding: 10px;
@@ -46,23 +46,8 @@
     transition: all 0.3s;
 }
 
-.register-section form button:hover{
+.login-section form button:hover{
     background-color: #311564;
     cursor: pointer;
     transition: all 0.3s;
-}
-
-.password-req{
-    padding: 0px;
-    margin-top: 0px;
-    font-size: 13px;
-    
-}
-
-.password-req .none{
-    color: rgb(134, 5, 5);
-}
-
-.password-req .correct{
-    color: rgb(8, 255, 8);
 }

@@ -1,0 +1,122 @@
+.dashboard-section{
+    max-width: 800px;
+    margin: 100px auto;
+    padding: 10px;
+    border: 1px solid #864df8;
+    background-color: #864df8;
+    border-radius: 5px;
+    color: white;
+}
+
+.dashboard-section .add{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.dashboard-section form{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.dashboard-section form label{
+    font-size: 18px;
+}
+
+.dashboard-section form input{
+    font-size: 18px;
+    border-radius: 5px;
+    border: none;
+    padding: 5px;
+}
+
+.dashboard-section form input:focus{
+    outline: none;
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
+}
+
+.dashboard-section form button{
+    background-color: #412B6B;
+    color: white;
+    padding: 10px;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s;
+}
+
+.dashboard-section form button:hover{
+    background-color: #311564;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.dashboard-section ul{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.dashboard-section li{
+    display: flex;
+    justify-content: space-between;
+}
+
+.dashboard-section .btn-group{
+    display: flex;
+    gap: 10px;
+}   
+
+.dashboard-section .btn-group .btn-delete{
+    background-color: crimson;
+    font-size: 15px;
+    border-radius: 5px;
+    border: none;
+    padding: 5px;
+    color: white;
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s;
+}
+
+.dashboard-section .btn-group .btn-progress{
+    background-color: #a6a113;
+    font-size: 15px;
+    border-radius: 5px;
+    border: none;
+    padding: 5px;
+    color: white;
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s;
+}
+
+.dashboard-section .btn-group .btn-complete{
+    background-color: #0c9b2b;
+    font-size: 15px;
+    border-radius: 5px;
+    border: none;
+    padding: 5px;
+    color: white;
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s;
+}
+
+.dashboard-section .btn-group .btn-delete:hover{
+    background-color: rgb(255, 0, 0);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.dashboard-section .btn-group .btn-progress:hover{
+    background-color: #c9c913;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.dashboard-section .btn-group .btn-complete:hover{
+    background-color: #08641c;
+    cursor: pointer;
+    transition: all 0.3s;
+}

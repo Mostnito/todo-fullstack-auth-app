@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 
+import './Login.css'
+
 function Login() {
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
@@ -60,14 +62,14 @@ function Login() {
     }
 
     return (
-        <div className="Login-section">
+        <div className="login-section">
             <h2>เข้าสู่ระบบ</h2>
             <form action="">
                 <label>อีเมล</label>
                 <input type="email" onChange={(e) => { emailvalidation(e.target.value) }} placeholder="example@gmail.com" />
                 <label>รหัสผ่าน</label>
                 <input type="password" onChange={(e) => { passwordvalidation(e.target.value) }} placeholder="password" />
-                <button type="submit" onClick={(e) => submit(e)}>Login</button>
+                <button type="submit" onClick={(e) => submit(e)}>เข้าสู่ระบบ</button>
             </form>
         </div>
     )

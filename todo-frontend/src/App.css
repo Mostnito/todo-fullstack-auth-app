@@ -1,6 +1,7 @@
 .App{
   padding: 0;
   margin: 0;
-  background-color: antiquewhite;
+  min-height: 100vh;
+  background-color: #211832;
 }
 

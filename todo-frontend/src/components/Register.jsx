@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { Routes, Route,useNavigate } from 'react-router-dom'
+
+import "./Register.css";
 function Register() {
     const navigate = useNavigate();
 
@@ -97,7 +99,7 @@ function Register() {
     }
 
     return (
-        <div className="Register-section">
+        <div className="register-section">
             <h2>สมัครสมาชิก</h2>
             <form action="">
                 <label>อีเมล</label>
@@ -106,7 +108,13 @@ function Register() {
                 <input type="password" onChange={(e) => { passwordvalidation(e.target.value) }} placeholder="password" />
                 <label>ยืนยันรหัสผ่าน</label>
                 <input type="password" onChange={(e) => { passwordMatchValidation(e.target.value) }} placeholder="confirm password" />
-                <button type="submit" onClick={(e) => { submit(e) }}>Register</button>
+                <div className="password-req">
+                <p className={passwordlength ? "correct" : "none"}>รหัสผ่านต้องมีความยาวอย่างน้อย 8 ตัวอักษร</p>
+                <p className={poassworduppercase ? "correct" : "none"}>รหัสผ่านต้องมีตัวอักษรพิมพ์ใหญ่อย่างน้อย 1 ตัว</p>
+                <p className={passwordspecial ? "correct" : "none"}>รหัสผ่านต้องมีอักษรพิเศษอย่างน้อย 1 ตัว</p>
+                </div>
+                
+                <button type="submit" onClick={(e) => { submit(e) }}>สมัครสมาชิก</button>
             </form>
         </div>
     )
