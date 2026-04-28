@@ -82,7 +82,7 @@ app.post("/login", async (req, res)=>{
 app.get("/todo", authenticateToken, async(req,res)=>{
     console.log("Fetching todos for user ID:", req.user.id);
     const userId = req.user.id;
-    const todos = await pool.query("SELECT * FROM todolist WHERE users_id=$1",[userId]);
+    const todos = await pool.query("SELECT * FROM todolist WHERE users_id=$1 ORDER BY id",[userId]);
     console.log("Todo",todos.rows);
     res.json(todos.rows);
 });
@@ -94,6 +94,26 @@ app.post("/todo/create", authenticateToken, async(req,res)=>{
     const newTodo = await pool.query("INSERT INTO todolist (users_id, topic, des,status) VALUES ($1, $2, $3, 'progress') RETURNING *",[userId, topic,des])
     console.log("Created todo for user ID:", req.user.id, "Todo:", newTodo.rows[0]);
     res.json(newTodo.rows[0]);
+});
+
+app.delete("/todo/delete/:id", authenticateToken, async(req,res)=>{
+    console.log("Deleting todo for user ID:", req.user.id);
+    const userId = req.user.id;
+    const {id} = req.params;
+    const del = await pool.query("DELETE FROM todolist WHERE id=$1 AND users_id=$2 RETURNING *",[id,userId]);
+    console.log("Deleted todo for user ID:", req.user.id, "Todo ID:", id);
+    res.json(del.rows[0]);
+});
+
+app.put("/todo/update/:id", authenticateToken, async(req,res)=>{
+    console.log("Updating todo for user ID:", req.user.id);
+    const userId = req.user.id;
+    const {id} = req.params;
+    const {status} = req.body;
+    const realstatus = status === 'progress' ? 'complete' : 'progress';
+    const update = await pool.query("UPDATE todolist SET status=$1 WHERE id=$2 AND users_id=$3 RETURNING *",[realstatus,id,userId]);
+    console.log("Updated todo for user ID:", req.user.id, "Todo ID:", id, "New Status:", status);
+    res.json(update.rows[0]);
 });
 
 app.get("/check", authenticateToken, async (req, res) => {
