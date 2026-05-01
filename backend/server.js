@@ -22,7 +22,7 @@ function authenticateToken(req, res, next){
     const token = authHeader.split(" ")[1];
     if (!token || !authHeader){
         console.log("No token");
-        return res.status(40.1).json({error: "No token"})
+        return res.status(401).json({error: "No token"})
     }
 
     try{
